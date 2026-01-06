@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Clarity Score™ | Clarity With Data</title>
+  <meta name="description" content="A data-informed readiness check for 2026 — Clarity Score™ by Clarity With Data." />
+  <style>
+    :root{
+      --bg:#f6f4ef;
+      --card:#ffffff;
+      --ink:#151515;
+      --muted:#5b5b5b;
+      --line:rgba(0,0,0,.08);
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 20% 0%, #fff 0%, var(--bg) 55%, #efece6 100%);
+      color:var(--ink);
+    }
+    .wrap{
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 28px 18px 56px;
+    }
+    header{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-bottom: 18px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:14px;
+      color:var(--muted);
+      letter-spacing:.2px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:#c9c3b7;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,.04);
+    }
+    h1{
+      margin:0;
+      font-size: 34px;
+      line-height:1.08;
+      letter-spacing:-.3px;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.45;
+      max-width: 62ch;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+      align-items:start;
+    }
+    @media (max-width: 860px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px 18px 16px;
+    }
+    .card h2{
+      margin:0 0 12px;
+      font-size:16px;
+      letter-spacing:.2px;
+    }
+    .row{
+      padding: 14px 0;
+      border-top:1px solid var(--line);
+    }
+    .row:first-of-type{border-top:none;padding-top:4px}
+    .label-line{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .label-line label{
+      font-weight:600;
+      font-size:14px;
+    }
+    .hint{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+      margin-top: 2px;
+    }
+    .pill{
+      font-variant-numeric: tabular-nums;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: #fbfaf8;
+      color: var(--ink);
+      font-size: 12px;
+      white-space:nowrap;
+    }
+    input[type="range"]{
+      width:100%;
+      accent-color: #2b2b2b; /* minimal, neutral */
+    }
+
+    .score{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .big{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom:1px solid var(--line);
+    }
+    .big .num{
+      font-size: 54px;
+      line-height:1;
+      letter-spacing:-1px;
+      font-variant-numeric: tabular-nums;
+    }
+    .big .outof{
+      color:var(--muted);
+      font-size:13px;
+      margin-left:8px;
+    }
+    .tier{
+      font-weight:700;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .msg{
+      color:var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+    .mini{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .mini div{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: #fbfaf8;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size: 13px;
+      color: var(--ink);
+    }
+    .mini span{
+      color:var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    button{
+      cursor:pointer;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background:#151515;
+      color:#fff;
+      padding: 10px 14px;
+      font-weight:600;
+      font-size: 13px;
+      letter-spacing:.2px;
+    }
+    button.secondary{
+      background:#fff;
+      color:#151515;
+    }
+    .toast{
+      display:none;
+      margin-top:10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    footer{
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align:center;
+    }
+    a{color:inherit}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand"><span class="dot"></span>Clarity With Data</div>
+      <h1>Clarity Score™</h1>
+      <p class="sub">A data-informed readiness check for your 2026 goals. Slide the scales, get your score (0–100), and a simple next step.</p>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT: Inputs -->
+      <section class="card">
+        <h2>Score your readiness</h2>
+
+        <div class="row">
+          <div class="label-line">
+            <label for="time">Time (0–25)</label>
+            <div class="pill"><span id="timeVal">12</span>/25</div>
+          </div>
+          <input id="time" type="range" min="0" max="25" value="12" />
+          <div class="hint">Do you control your calendar—or does it control you?</div>
+        </div>
+
+        <div class="row">
+          <div class="label-line">
+            <label for="money">Money (0–25)</label>
+            <div class="pill"><span id="moneyVal">12</span>/25</div>
+          </div>
+          <input id="money" type="range" min="0" max="25" value="12" />
+          <div class="hint">Can you absorb surprises without everything falling apart?</div>
+        </div>
+
+        <div class="row">
+          <div class="label-line">
+            <label for="skills">Skills (0–25)</label>
+            <div class="pill"><span id="skillsVal">12</span>/25</div>
+          </div>
+          <input id="skills" type="range" min="0" max="25" value="12" />
+          <div class="hint">Are your skills aligned with what your goals require?</div>
+        </div>
+
+        <div class="row">
+          <div class="label-line">
+            <label for="focus">Focus (0–25)</label>
+            <div class="pill"><span id="focusVal">12</span>/25</div>
+          </div>
+          <input id="focus" type="range" min="0" max="25" value="12" />
+          <div class="hint">How noisy is your decision space right now?</div>
+        </div>
+
+        <div class="actions">
+          <button id="copyBtn" type="button">Copy results</button>
+          <button id="resetBtn" class="secondary" type="button">Reset</button>
+        </div>
+        <div id="toast" class="toast">Copied to clipboard.</div>
+      </section>
+
+      <!-- RIGHT: Output -->
+      <aside class="card score">
+        <div class="big">
+          <div>
+            <div class="tier" id="tier">Good Clarity</div>
+            <div class="msg" id="msg">You’re close. Strengthen the lowest area before stacking more goals.</div>
+          </div>
+          <div style="text-align:right">
+            <div class="num"><span id="total">48</span><span class="outof">/100</span></div>
+          </div>
+        </div>
+
+        <div class="mini">
+          <div>Time <span id="timeMini">12</span></div>
+          <div>Money <span id="moneyMini">12</span></div>
+          <div>Skills <span id="skillsMini">12</span></div>
+          <div>Focus <span id="focusMini">12</span></div>
+        </div>
+
+        <div style="margin-top:10px">
+          <div class="tier">Your next best move</div>
+          <div class="msg" id="nextMove"></div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      © <span id="year"></span> Clarity With Data — Where Insight Meets Intention
+    </footer>
+  </div>
+
+  <script>
+    const el = (id) => document.getElementById(id);
+
+    const inputs = {
+      time: el("time"),
+      money: el("money"),
+      skills: el("skills"),
+      focus: el("focus"),
+    };
+
+    const display = {
+      timeVal: el("timeVal"),
+      moneyVal: el("moneyVal"),
+      skillsVal: el("skillsVal"),
+      focusVal: el("focusVal"),
+      total: el("total"),
+      tier: el("tier"),
+      msg: el("msg"),
+      timeMini: el("timeMini"),
+      moneyMini: el("moneyMini"),
+      skillsMini: el("skillsMini"),
+      focusMini: el("focusMini"),
+      nextMove: el("nextMove"),
+      year: el("year"),
+      toast: el("toast")
+    };
+
+    const recs = {
+      time: [
+        "Block a weekly planning hour and protect it like an appointment.",
+        "Remove one recurring commitment for 30 days.",
+        "Use one rule: if it isn’t scheduled, it isn’t real."
+      ],
+      money: [
+        "Write down your top 5 monthly expenses and choose one reduction.",
+        "Start a mini-buffer—even $25/week counts.",
+        "Automate one savings or bill action so it happens without effort."
+      ],
+      skills: [
+        "Pick ONE skill to deepen for 30 days (not five).",
+        "Create one portfolio artifact: a post, dashboard, or mini project.",
+        "Ask: does this skill directly support your 2026 goal?"
+      ],
+      focus: [
+        "Write your top 3 priorities for January—everything else is ‘not now’.",
+        "Create a ‘not now’ list to reduce mental noise.",
+        "Batch decisions (meals, outfits, tasks) to reduce daily choices."
+      ],
+    };
+
+    function computeTier(total){
+      if (total >= 80) return ["High Clarity", "You’re ready to execute. Set 1–2 bold goals and build a system to sustain momentum."];
+      if (total >= 60) return ["Good Clarity", "You’re close. Strengthen the lowest area before stacking more goals."];
+      if (total >= 40) return ["Developing Clarity", "Your goals may be solid, but your foundation needs support. Start with the lowest category."];
+      return ["Low Clarity", "Pause before pushing. Reduce overwhelm, stabilize essentials, then set goals."];
+    }
+
+    function update(){
+      const t = +inputs.time.value;
+      const m = +inputs.money.value;
+      const s = +inputs.skills.value;
+      const f = +inputs.focus.value;
+
+      display.timeVal.textContent = t;
+      display.moneyVal.textContent = m;
+      display.skillsVal.textContent = s;
+      display.focusVal.textContent = f;
+
+      display.timeMini.textContent = t;
+      display.moneyMini.textContent = m;
+      display.skillsMini.textContent = s;
+      display.focusMini.textContent = f;
+
+      const total = t + m + s + f;
+      display.total.textContent = total;
+
+      const [tier, msg] = computeTier(total);
+      display.tier.textContent = tier;
+      display.msg.textContent = msg;
+
+      const scores = { time:t, money:m, skills:s, focus:f };
+      const minVal = Math.min(...Object.values(scores));
+      const lows = Object.keys(scores).filter(k => scores[k] === minVal);
+
+      const first = lows[0];
+      const suggestion = recs[first][Math.floor(Math.random()*recs[first].length)];
+
+      const label = first.charAt(0).toUpperCase() + first.slice(1);
+      display.nextMove.textContent = `Lowest area: ${label}. ${suggestion}`;
+    }
+
+    // copy + reset
+    el("copyBtn").addEventListener("click", async () => {
+      const t = +inputs.time.value, m = +inputs.money.value, s = +inputs.skills.value, f = +inputs.focus.value;
+      const total = t+m+s+f;
+      const [tier] = computeTier(total);
+      const text = `Clarity Score™: ${total}/100 (${tier}) — Time ${t}, Money ${m}, Skills ${s}, Focus ${f}.`;
+      try{
+        await navigator.clipboard.writeText(text);
+        display.toast.style.display = "block";
+        setTimeout(()=> display.toast.style.display="none", 1600);
+      }catch(e){
+        alert("Copy failed. Your score: " + text);
+      }
+    });
+
+    el("resetBtn").addEventListener("click", () => {
+      inputs.time.value = 12;
+      inputs.money.value = 12;
+      inputs.skills.value = 12;
+      inputs.focus.value = 12;
+      update();
+    });
+
+    Object.values(inputs).forEach(inp => inp.addEventListener("input", update));
+
+    display.year.textContent = new Date().getFullYear();
+    update();
+  </script>
+</body>
+</html>
